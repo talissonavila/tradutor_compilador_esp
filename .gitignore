@@ -1,0 +1,6 @@
+lex.yy.c
+analisador_sintatico.tab.c
+analisador_sintatico.tab.h
+tradutor
+output/*
+!output/
