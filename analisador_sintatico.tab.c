@@ -67,13 +67,13 @@
 
 
 /* First part of user prologue.  */
-#line 1 "parser.y"
+#line 1 "analisador_sintatico.y"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "node.h"
-#include "symbol_table.h"
+#include "gerador_de_ast.h"
+#include "tabela_de_simbolos.h"
 
 extern int yylineno;
 extern char linha_atual[];
@@ -83,7 +83,7 @@ int yylex();
 extern int yydebug;
 Node *syntaxTree = NULL; 
 
-#line 87 "parser.tab.c"
+#line 87 "analisador_sintatico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -106,7 +106,7 @@ Node *syntaxTree = NULL;
 #  endif
 # endif
 
-#include "parser.tab.h"
+#include "analisador_sintatico.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1257,7 +1257,7 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: declaracoes config bloco_opt repita bloco_opt fim_opt  */
-#line 53 "parser.y"
+#line 53 "analisador_sintatico.y"
                                                           { 
         printf("Programa reconhecido com sucesso!\n"); 
         syntaxTree = newNode("PROGRAMA", 6, (yyvsp[-5].node), (yyvsp[-4].node), (yyvsp[-3].node), (yyvsp[-2].node), (yyvsp[-1].node), (yyvsp[0].node));
@@ -1268,35 +1268,35 @@ yyreduce:
         printf("[DEBUG] Árvore sintática gerada, iniciando impressão...\n");
         printTree(syntaxTree, 0); // Para exibir a árvore sintática
     }
-#line 1272 "parser.tab.c"
+#line 1272 "analisador_sintatico.tab.c"
     break;
 
   case 3: /* bloco_opt: %empty  */
-#line 66 "parser.y"
+#line 66 "analisador_sintatico.y"
     { (yyval.node) = newNode("BLOCO_VAZIO", 0); }
-#line 1278 "parser.tab.c"
+#line 1278 "analisador_sintatico.tab.c"
     break;
 
   case 4: /* bloco_opt: bloco  */
-#line 67 "parser.y"
+#line 67 "analisador_sintatico.y"
             { (yyval.node) = (yyvsp[0].node); }
-#line 1284 "parser.tab.c"
+#line 1284 "analisador_sintatico.tab.c"
     break;
 
   case 5: /* declaracoes: %empty  */
-#line 72 "parser.y"
+#line 72 "analisador_sintatico.y"
     { (yyval.node) = newNode("DECLARACOES", 0); }
-#line 1290 "parser.tab.c"
+#line 1290 "analisador_sintatico.tab.c"
     break;
 
   case 6: /* declaracoes: declaracoes declaracao  */
-#line 73 "parser.y"
+#line 73 "analisador_sintatico.y"
                              { addChild((yyvsp[-1].node), (yyvsp[0].node)); (yyval.node) = (yyvsp[-1].node); }
-#line 1296 "parser.tab.c"
+#line 1296 "analisador_sintatico.tab.c"
     break;
 
   case 7: /* declaracao: VAR INTEIRO ':' lista_identificadores ';'  */
-#line 77 "parser.y"
+#line 77 "analisador_sintatico.y"
                                               { 
         if (!(yyvsp[-1].node)) {
             printf("[ERRO] lista_identificadores retornou NULL!\n");
@@ -1324,11 +1324,11 @@ yyreduce:
             printSymbolTable();
         }
     }
-#line 1328 "parser.tab.c"
+#line 1328 "analisador_sintatico.tab.c"
     break;
 
   case 8: /* declaracao: VAR TEXTO ':' lista_identificadores ';'  */
-#line 104 "parser.y"
+#line 104 "analisador_sintatico.y"
                                               { 
         if (!(yyvsp[-1].node)) {
             printf("[ERRO] lista_identificadores retornou NULL!\n");
@@ -1356,11 +1356,11 @@ yyreduce:
             printSymbolTable();
         }
     }
-#line 1360 "parser.tab.c"
+#line 1360 "analisador_sintatico.tab.c"
     break;
 
   case 9: /* declaracao: VAR BOOLEANO ':' lista_identificadores ';'  */
-#line 131 "parser.y"
+#line 131 "analisador_sintatico.y"
                                                  { 
         if (!(yyvsp[-1].node)) {
             printf("[ERRO] lista_identificadores retornou NULL!\n");
@@ -1388,108 +1388,108 @@ yyreduce:
             printSymbolTable();
         }
     }
-#line 1392 "parser.tab.c"
+#line 1392 "analisador_sintatico.tab.c"
     break;
 
   case 10: /* lista_identificadores: IDENTIFICADOR  */
-#line 161 "parser.y"
+#line 161 "analisador_sintatico.y"
                   { (yyval.node) = newNode("LISTA_IDENTIFICADORES", 1, newNode("IDENTIFICADOR", 1, newNode((yyvsp[0].strval), 0))); }
-#line 1398 "parser.tab.c"
+#line 1398 "analisador_sintatico.tab.c"
     break;
 
   case 11: /* lista_identificadores: lista_identificadores ',' IDENTIFICADOR  */
-#line 162 "parser.y"
+#line 162 "analisador_sintatico.y"
                                               {
       addChild((yyvsp[-2].node), newNode("IDENTIFICADOR", 1, newNode((yyvsp[0].strval), 0)));
       (yyval.node) = (yyvsp[-2].node);}
-#line 1406 "parser.tab.c"
+#line 1406 "analisador_sintatico.tab.c"
     break;
 
   case 12: /* config: CONFIG bloco FIM  */
-#line 169 "parser.y"
+#line 169 "analisador_sintatico.y"
                      { 
         printf("Configuração processada.\n");
         printf("[DEBUG] Criando nó CONFIG, bloco=%p\n", (void*)(yyvsp[-1].node));
         (yyval.node) = newNode("CONFIG", 2, (yyvsp[-1].node), newNode("FIM", 0)); 
     }
-#line 1416 "parser.tab.c"
+#line 1416 "analisador_sintatico.tab.c"
     break;
 
   case 13: /* repita: REPITA bloco FIM  */
-#line 178 "parser.y"
+#line 178 "analisador_sintatico.y"
                      { 
         printf("Loop principal processado.\n");
         printf("[DEBUG] Criando nó para LOOP PRINCIPAL\n");
         (yyval.node) = newNode("REPITA", 2, (yyvsp[-1].node), newNode("FIM", 0));
     }
-#line 1426 "parser.tab.c"
+#line 1426 "analisador_sintatico.tab.c"
     break;
 
   case 14: /* bloco: comando  */
-#line 187 "parser.y"
+#line 187 "analisador_sintatico.y"
             { (yyval.node) = newNode("BLOCO", 1, (yyvsp[0].node)); }
-#line 1432 "parser.tab.c"
+#line 1432 "analisador_sintatico.tab.c"
     break;
 
   case 15: /* bloco: bloco comando  */
-#line 188 "parser.y"
+#line 188 "analisador_sintatico.y"
                     { 
         addChild((yyvsp[-1].node), (yyvsp[0].node));
         (yyval.node) = (yyvsp[-1].node);
     }
-#line 1441 "parser.tab.c"
+#line 1441 "analisador_sintatico.tab.c"
     break;
 
   case 16: /* comando: atribuicao  */
-#line 196 "parser.y"
+#line 196 "analisador_sintatico.y"
                { (yyval.node) = (yyvsp[0].node); }
-#line 1447 "parser.tab.c"
+#line 1447 "analisador_sintatico.tab.c"
     break;
 
   case 17: /* comando: operacao_pwm  */
-#line 197 "parser.y"
+#line 197 "analisador_sintatico.y"
                    { (yyval.node) = (yyvsp[0].node); }
-#line 1453 "parser.tab.c"
+#line 1453 "analisador_sintatico.tab.c"
     break;
 
   case 18: /* comando: operacao_io  */
-#line 198 "parser.y"
+#line 198 "analisador_sintatico.y"
                   { (yyval.node) = (yyvsp[0].node); }
-#line 1459 "parser.tab.c"
+#line 1459 "analisador_sintatico.tab.c"
     break;
 
   case 19: /* comando: operacao_wifi  */
-#line 199 "parser.y"
+#line 199 "analisador_sintatico.y"
                     { (yyval.node) = (yyvsp[0].node); }
-#line 1465 "parser.tab.c"
+#line 1465 "analisador_sintatico.tab.c"
     break;
 
   case 20: /* comando: operacao_controle  */
-#line 200 "parser.y"
+#line 200 "analisador_sintatico.y"
                         { (yyval.node) = (yyvsp[0].node); }
-#line 1471 "parser.tab.c"
+#line 1471 "analisador_sintatico.tab.c"
     break;
 
   case 21: /* comando: operacao_serial  */
-#line 201 "parser.y"
+#line 201 "analisador_sintatico.y"
                       { (yyval.node) = (yyvsp[0].node); }
-#line 1477 "parser.tab.c"
+#line 1477 "analisador_sintatico.tab.c"
     break;
 
   case 22: /* comando: operacao_condicional  */
-#line 202 "parser.y"
+#line 202 "analisador_sintatico.y"
                            { (yyval.node) = (yyvsp[0].node); }
-#line 1483 "parser.tab.c"
+#line 1483 "analisador_sintatico.tab.c"
     break;
 
   case 23: /* comando: operacoes_aritmeticas  */
-#line 203 "parser.y"
+#line 203 "analisador_sintatico.y"
                             { (yyval.node) = (yyvsp[0].node); }
-#line 1489 "parser.tab.c"
+#line 1489 "analisador_sintatico.tab.c"
     break;
 
   case 24: /* atribuicao: IDENTIFICADOR '=' NUMERO ';'  */
-#line 208 "parser.y"
+#line 208 "analisador_sintatico.y"
                                  { 
         checkVariableType((yyvsp[-3].strval), "INTEIRO");
         printf("Atribuição: %s = %d\n", (yyvsp[-3].strval), (yyvsp[-1].intval));
@@ -1497,50 +1497,50 @@ yyreduce:
         sprintf(buffer, "%d", (yyvsp[-1].intval)); // Converte inteiro para string
         (yyval.node) = newNode("ATRIBUICAO", 2, newNode((yyvsp[-3].strval), 0), newNode("NUMERO", 1, newNode(strdup(buffer), 0))); 
     }
-#line 1501 "parser.tab.c"
+#line 1501 "analisador_sintatico.tab.c"
     break;
 
   case 25: /* atribuicao: IDENTIFICADOR '=' STRING ';'  */
-#line 215 "parser.y"
+#line 215 "analisador_sintatico.y"
                                    { 
         checkVariableType((yyvsp[-3].strval), "TEXTO");
         printf("Atribuição: %s = %s\n", (yyvsp[-3].strval), (yyvsp[-1].strval));
         (yyval.node) = newNode("ATRIBUICAO", 2, newNode((yyvsp[-3].strval), 0), newNode("STRING", 1, newNode((yyvsp[-1].strval), 0))); 
     }
-#line 1511 "parser.tab.c"
+#line 1511 "analisador_sintatico.tab.c"
     break;
 
   case 26: /* atribuicao: IDENTIFICADOR '=' VERDADEIRO ';'  */
-#line 220 "parser.y"
+#line 220 "analisador_sintatico.y"
                                        { 
         checkVariableType((yyvsp[-3].strval), "BOOLEANO");
         printf("Atribuição: %s = VERDADEIRO\n", (yyvsp[-3].strval));
         (yyval.node) = newNode("ATRIBUICAO", 2, newNode((yyvsp[-3].strval), 0), newNode("BOOLEANO", 1, newNode("VERDADEIRO", 0))); 
     }
-#line 1521 "parser.tab.c"
+#line 1521 "analisador_sintatico.tab.c"
     break;
 
   case 27: /* atribuicao: IDENTIFICADOR '=' FALSO ';'  */
-#line 225 "parser.y"
+#line 225 "analisador_sintatico.y"
                                   { 
         checkVariableType((yyvsp[-3].strval), "BOOLEANO");
         printf("Atribuição: %s = FALSO\n", (yyvsp[-3].strval));
         (yyval.node) = newNode("ATRIBUICAO", 2, newNode((yyvsp[-3].strval), 0), newNode("BOOLEANO", 1, newNode("FALSO", 0))); 
     }
-#line 1531 "parser.tab.c"
+#line 1531 "analisador_sintatico.tab.c"
     break;
 
   case 28: /* atribuicao: IDENTIFICADOR '=' expressao_logica ';'  */
-#line 230 "parser.y"
+#line 230 "analisador_sintatico.y"
                                              { 
         checkVariableType((yyvsp[-3].strval), "BOOLEANO");
         (yyval.node) = newNode("ATRIBUICAO", 2, newNode((yyvsp[-3].strval), 0), (yyvsp[-1].node)); 
     }
-#line 1540 "parser.tab.c"
+#line 1540 "analisador_sintatico.tab.c"
     break;
 
   case 29: /* operacao_pwm: AJUSTARPWM IDENTIFICADOR COM VALOR NUMERO ';'  */
-#line 238 "parser.y"
+#line 238 "analisador_sintatico.y"
                                                   {
         checkVariableType((yyvsp[-4].strval), "INTEIRO");
         char valorStr[16];
@@ -1551,21 +1551,21 @@ yyreduce:
             newNode("VALOR", 1, newNode(strdup(valorStr), 0))  
         );
     }
-#line 1555 "parser.tab.c"
+#line 1555 "analisador_sintatico.tab.c"
     break;
 
   case 30: /* operacao_pwm: AJUSTARPWM IDENTIFICADOR COM VALOR IDENTIFICADOR ';'  */
-#line 248 "parser.y"
+#line 248 "analisador_sintatico.y"
                                                            { 
         checkVariableType((yyvsp[-4].strval), "INTEIRO");
         checkVariableType((yyvsp[-1].strval), "INTEIRO");
         (yyval.node) = newNode("AJUSTAR_PWM", 3, newNode((yyvsp[-4].strval), 0), newNode("VALOR", 1, newNode((yyvsp[-1].strval), 0))); 
     }
-#line 1565 "parser.tab.c"
+#line 1565 "analisador_sintatico.tab.c"
     break;
 
   case 31: /* operacao_pwm: CONFIGURARPWM IDENTIFICADOR COM FREQUENCIA NUMERO RESOLUCAO NUMERO ';'  */
-#line 253 "parser.y"
+#line 253 "analisador_sintatico.y"
                                                                              {
         checkVariableType((yyvsp[-6].strval), "INTEIRO");
         char freqStr[16], resStr[16];
@@ -1578,49 +1578,49 @@ yyreduce:
             newNode("RESOLUCAO", 1, newNode(strdup(resStr), 0))  
         );
     }
-#line 1582 "parser.tab.c"
+#line 1582 "analisador_sintatico.tab.c"
     break;
 
   case 32: /* operacao_io: CONFIGURAR IDENTIFICADOR COMO SAIDA ';'  */
-#line 268 "parser.y"
+#line 268 "analisador_sintatico.y"
                                             { 
         checkVariableType((yyvsp[-3].strval), "INTEIRO");
         printf("[DEBUG] Configurar %s como saída reconhecido corretamente!\n", (yyvsp[-3].strval));
         (yyval.node) = newNode("CONFIGURAR_IO", 2, newNode((yyvsp[-3].strval), 0), newNode("SAIDA", 0)); 
     }
-#line 1592 "parser.tab.c"
+#line 1592 "analisador_sintatico.tab.c"
     break;
 
   case 33: /* operacao_io: CONFIGURAR IDENTIFICADOR COMO ENTRADA ';'  */
-#line 273 "parser.y"
+#line 273 "analisador_sintatico.y"
                                                 { 
         checkVariableType((yyvsp[-3].strval), "INTEIRO");
         printf("[DEBUG] Configurar %s como entrada reconhecido corretamente!\n", (yyvsp[-3].strval));
         (yyval.node) = newNode("CONFIGURAR_IO", 2, newNode((yyvsp[-3].strval), 0), newNode("ENTRADA", 0)); 
     }
-#line 1602 "parser.tab.c"
+#line 1602 "analisador_sintatico.tab.c"
     break;
 
   case 34: /* operacao_io: LIGAR IDENTIFICADOR ';'  */
-#line 278 "parser.y"
+#line 278 "analisador_sintatico.y"
                               { 
         checkVariableType((yyvsp[-1].strval), "INTEIRO");
         (yyval.node) = newNode("LIGAR", 1, newNode((yyvsp[-1].strval), 0)); 
     }
-#line 1611 "parser.tab.c"
+#line 1611 "analisador_sintatico.tab.c"
     break;
 
   case 35: /* operacao_io: DESLIGAR IDENTIFICADOR ';'  */
-#line 282 "parser.y"
+#line 282 "analisador_sintatico.y"
                                  { 
         checkVariableType((yyvsp[-1].strval), "INTEIRO");
         (yyval.node) = newNode("DESLIGAR", 1, newNode((yyvsp[-1].strval), 0)); 
     }
-#line 1620 "parser.tab.c"
+#line 1620 "analisador_sintatico.tab.c"
     break;
 
   case 36: /* operacao_wifi: CONECTARWIFI IDENTIFICADOR IDENTIFICADOR ';'  */
-#line 290 "parser.y"
+#line 290 "analisador_sintatico.y"
                                                  { 
         checkVariableType((yyvsp[-2].strval), "TEXTO");
         checkVariableType((yyvsp[-1].strval), "TEXTO");
@@ -1628,19 +1628,19 @@ yyreduce:
         printf("[DEBUG] Criando nó para operação WiFi\n");
         (yyval.node) = newNode("CONECTAR_WIFI", 2, newNode((yyvsp[-2].strval), 0), newNode((yyvsp[-1].strval), 0)); 
     }
-#line 1632 "parser.tab.c"
+#line 1632 "analisador_sintatico.tab.c"
     break;
 
   case 37: /* operacao_wifi: ENVIARHTTP STRING STRING ';'  */
-#line 297 "parser.y"
+#line 297 "analisador_sintatico.y"
                                    {
          (yyval.node) = newNode("ENVIAR_HTTP", 2, newNode((yyvsp[-2].strval), 0), newNode((yyvsp[-1].strval), 0));
     }
-#line 1640 "parser.tab.c"
+#line 1640 "analisador_sintatico.tab.c"
     break;
 
   case 38: /* operacao_serial: CONFIGURARSERIAL NUMERO ';'  */
-#line 303 "parser.y"
+#line 303 "analisador_sintatico.y"
                                 {
         if ((yyvsp[-1].intval) < 300 || (yyvsp[-1].intval) > 115200) {
             printf("Erro Semântico: Taxa de transmissão inválida '%d'. Deve estar entre 300 e 115200.\n", (yyvsp[-1].intval));
@@ -1650,91 +1650,91 @@ yyreduce:
         sprintf(buffer, "%d", (yyvsp[-1].intval));
         (yyval.node) = newNode("CONFIGURAR_SERIAL", 1, newNode(strdup(buffer), 0)); 
     }
-#line 1654 "parser.tab.c"
+#line 1654 "analisador_sintatico.tab.c"
     break;
 
   case 39: /* operacao_serial: ESCREVERSERIAL STRING ';'  */
-#line 312 "parser.y"
+#line 312 "analisador_sintatico.y"
                                 {
         (yyval.node) = newNode("ESCREVER_SERIAL", 1, newNode((yyvsp[-1].strval), 0));
     }
-#line 1662 "parser.tab.c"
+#line 1662 "analisador_sintatico.tab.c"
     break;
 
   case 40: /* operacao_serial: IDENTIFICADOR '=' LERSERIAL ';'  */
-#line 315 "parser.y"
+#line 315 "analisador_sintatico.y"
                                       {
         checkVariableType((yyvsp[-3].strval), "TEXTO");
         (yyval.node) = newNode("LER_SERIAL", 1, newNode((yyvsp[-3].strval), 0));
     }
-#line 1671 "parser.tab.c"
+#line 1671 "analisador_sintatico.tab.c"
     break;
 
   case 41: /* operacao_controle: ESPERAR NUMERO ';'  */
-#line 323 "parser.y"
+#line 323 "analisador_sintatico.y"
                        { 
         printf("Esperar: %d ms\n", (yyvsp[-1].intval));
         char buffer[20];
         sprintf(buffer, "%d", (yyvsp[-1].intval));
         (yyval.node) = newNode("ESPERAR", 1, newNode(strdup(buffer), 0)); 
     }
-#line 1682 "parser.tab.c"
+#line 1682 "analisador_sintatico.tab.c"
     break;
 
   case 42: /* fim_opt: %empty  */
-#line 332 "parser.y"
+#line 332 "analisador_sintatico.y"
     { (yyval.node) = newNode("FIM_VAZIO", 0); }
-#line 1688 "parser.tab.c"
+#line 1688 "analisador_sintatico.tab.c"
     break;
 
   case 43: /* fim_opt: FIM  */
-#line 333 "parser.y"
+#line 333 "analisador_sintatico.y"
           { (yyval.node) = newNode("FIM", 0); }
-#line 1694 "parser.tab.c"
+#line 1694 "analisador_sintatico.tab.c"
     break;
 
   case 44: /* operacao_condicional: SE expressao_logica ENTAO bloco senao_opt FIM  */
-#line 337 "parser.y"
+#line 337 "analisador_sintatico.y"
                                                   {
         printf("Estrutura Condicional (se ... então ... fim)\n");
         (yyval.node) = newNode("CONDICIONAL", 3, (yyvsp[-4].node), (yyvsp[-2].node), (yyvsp[-1].node), 0);
     }
-#line 1703 "parser.tab.c"
+#line 1703 "analisador_sintatico.tab.c"
     break;
 
   case 45: /* operacao_condicional: ENQUANTO bloco FIM  */
-#line 341 "parser.y"
+#line 341 "analisador_sintatico.y"
                          {
         printf("Estrutura de Repetição (enquanto ... fim)\n");
         (yyval.node) = newNode("ENQUANTO", 1, (yyvsp[-1].node), 0);
     }
-#line 1712 "parser.tab.c"
+#line 1712 "analisador_sintatico.tab.c"
     break;
 
   case 46: /* senao_opt: %empty  */
-#line 348 "parser.y"
+#line 348 "analisador_sintatico.y"
     { (yyval.node) = newNode("SENAO_VAZIO", 0); }
-#line 1718 "parser.tab.c"
+#line 1718 "analisador_sintatico.tab.c"
     break;
 
   case 47: /* senao_opt: SENAO bloco  */
-#line 349 "parser.y"
+#line 349 "analisador_sintatico.y"
                   { (yyval.node) = newNode("SENAO", 1, (yyvsp[0].node), 0); }
-#line 1724 "parser.tab.c"
+#line 1724 "analisador_sintatico.tab.c"
     break;
 
   case 48: /* expressao_logica: IDENTIFICADOR  */
-#line 353 "parser.y"
+#line 353 "analisador_sintatico.y"
                   {
         checkVariableType((yyvsp[0].strval), "BOOLEANO");
 
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 1, newNode((yyvsp[0].strval), 0));
     }
-#line 1734 "parser.tab.c"
+#line 1734 "analisador_sintatico.tab.c"
     break;
 
   case 49: /* expressao_logica: IDENTIFICADOR IGUAL NUMERO  */
-#line 358 "parser.y"
+#line 358 "analisador_sintatico.y"
                                  {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1744,11 +1744,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode("==", 0), newNode(valorStr, 0));
     }
-#line 1748 "parser.tab.c"
+#line 1748 "analisador_sintatico.tab.c"
     break;
 
   case 50: /* expressao_logica: IDENTIFICADOR DIFERENTE NUMERO  */
-#line 367 "parser.y"
+#line 367 "analisador_sintatico.y"
                                      {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1758,11 +1758,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode("!=", 0), newNode(valorStr, 0));
     }
-#line 1762 "parser.tab.c"
+#line 1762 "analisador_sintatico.tab.c"
     break;
 
   case 51: /* expressao_logica: IDENTIFICADOR MENOR_QUE NUMERO  */
-#line 376 "parser.y"
+#line 376 "analisador_sintatico.y"
                                      {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1772,11 +1772,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode("<", 0), newNode(valorStr, 0));
     }
-#line 1776 "parser.tab.c"
+#line 1776 "analisador_sintatico.tab.c"
     break;
 
   case 52: /* expressao_logica: IDENTIFICADOR MAIOR_QUE NUMERO  */
-#line 385 "parser.y"
+#line 385 "analisador_sintatico.y"
                                      {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1786,11 +1786,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode(">", 0), newNode(valorStr, 0));
     }
-#line 1790 "parser.tab.c"
+#line 1790 "analisador_sintatico.tab.c"
     break;
 
   case 53: /* expressao_logica: IDENTIFICADOR MAIOR_IGUAL NUMERO  */
-#line 394 "parser.y"
+#line 394 "analisador_sintatico.y"
                                        {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1800,11 +1800,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode(">=", 0), newNode(valorStr, 0));
     }
-#line 1804 "parser.tab.c"
+#line 1804 "analisador_sintatico.tab.c"
     break;
 
   case 54: /* expressao_logica: IDENTIFICADOR MENOR_IGUAL NUMERO  */
-#line 403 "parser.y"
+#line 403 "analisador_sintatico.y"
                                        {
         printf("Comparação: %s == %d\n", (yyvsp[-2].strval), (yyvsp[0].intval));
 
@@ -1814,11 +1814,11 @@ yyreduce:
         sprintf(valorStr, "%d", (yyvsp[0].intval));
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode("<=", 0), newNode(valorStr, 0));
     }
-#line 1818 "parser.tab.c"
+#line 1818 "analisador_sintatico.tab.c"
     break;
 
   case 55: /* expressao_logica: IDENTIFICADOR IGUAL STRING  */
-#line 412 "parser.y"
+#line 412 "analisador_sintatico.y"
                                  {
         printf("Comparação: %s == %s\n", (yyvsp[-2].strval), (yyvsp[0].strval));
 
@@ -1826,46 +1826,46 @@ yyreduce:
 
         (yyval.node) = newNode("EXPRESSAO_LOGICA", 3, newNode((yyvsp[-2].strval), 0), newNode("==", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1830 "parser.tab.c"
+#line 1830 "analisador_sintatico.tab.c"
     break;
 
   case 56: /* operacoes_aritmeticas: operacao_soma  */
-#line 422 "parser.y"
+#line 422 "analisador_sintatico.y"
                   { (yyval.node) = (yyvsp[0].node);}
-#line 1836 "parser.tab.c"
+#line 1836 "analisador_sintatico.tab.c"
     break;
 
   case 57: /* operacoes_aritmeticas: operacao_subtracao  */
-#line 423 "parser.y"
+#line 423 "analisador_sintatico.y"
                          { (yyval.node) = (yyvsp[0].node);}
-#line 1842 "parser.tab.c"
+#line 1842 "analisador_sintatico.tab.c"
     break;
 
   case 58: /* operacoes_aritmeticas: operacao_multiplicacao  */
-#line 424 "parser.y"
+#line 424 "analisador_sintatico.y"
                              { (yyval.node) = (yyvsp[0].node);}
-#line 1848 "parser.tab.c"
+#line 1848 "analisador_sintatico.tab.c"
     break;
 
   case 59: /* operacoes_aritmeticas: operacao_divisao  */
-#line 425 "parser.y"
+#line 425 "analisador_sintatico.y"
                        { (yyval.node) = (yyvsp[0].node);}
-#line 1854 "parser.tab.c"
+#line 1854 "analisador_sintatico.tab.c"
     break;
 
   case 60: /* operacao_soma: IDENTIFICADOR SOMA IDENTIFICADOR  */
-#line 428 "parser.y"
+#line 428 "analisador_sintatico.y"
                                      {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
         (yyval.node) = newNode("OPERACAO_SOMA", 3, newNode((yyvsp[-2].strval), 0), newNode("+", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1865 "parser.tab.c"
+#line 1865 "analisador_sintatico.tab.c"
     break;
 
   case 61: /* operacao_soma: IDENTIFICADOR SOMA NUMERO  */
-#line 434 "parser.y"
+#line 434 "analisador_sintatico.y"
                                 {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
 
@@ -1874,11 +1874,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SOMA", 3, newNode((yyvsp[-2].strval), 0), newNode("+", 0), newNode(valorStr, 0));
     }
-#line 1878 "parser.tab.c"
+#line 1878 "analisador_sintatico.tab.c"
     break;
 
   case 62: /* operacao_soma: NUMERO SOMA IDENTIFICADOR  */
-#line 442 "parser.y"
+#line 442 "analisador_sintatico.y"
                                 {
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
@@ -1887,11 +1887,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SOMA", 3, newNode(valorStr, 0), newNode("+", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1891 "parser.tab.c"
+#line 1891 "analisador_sintatico.tab.c"
     break;
 
   case 63: /* operacao_soma: NUMERO SOMA NUMERO  */
-#line 450 "parser.y"
+#line 450 "analisador_sintatico.y"
                          {
         char valorStr1[16];
         char valorStr2[16];
@@ -1900,22 +1900,22 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SOMA", 3, newNode(valorStr1, 0), newNode("+", 0), newNode(valorStr2, 0));
     }
-#line 1904 "parser.tab.c"
+#line 1904 "analisador_sintatico.tab.c"
     break;
 
   case 64: /* operacao_subtracao: IDENTIFICADOR SUBTRACAO IDENTIFICADOR  */
-#line 461 "parser.y"
+#line 461 "analisador_sintatico.y"
                                           {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
         (yyval.node) = newNode("OPERACAO_SUBTRACAO", 3, newNode((yyvsp[-2].strval), 0), newNode("-", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1915 "parser.tab.c"
+#line 1915 "analisador_sintatico.tab.c"
     break;
 
   case 65: /* operacao_subtracao: IDENTIFICADOR SUBTRACAO NUMERO  */
-#line 467 "parser.y"
+#line 467 "analisador_sintatico.y"
                                      {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
 
@@ -1924,11 +1924,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SUBTRACAO", 3, newNode((yyvsp[-2].strval), 0), newNode("-", 0), newNode(valorStr, 0));
     }
-#line 1928 "parser.tab.c"
+#line 1928 "analisador_sintatico.tab.c"
     break;
 
   case 66: /* operacao_subtracao: NUMERO SUBTRACAO IDENTIFICADOR  */
-#line 475 "parser.y"
+#line 475 "analisador_sintatico.y"
                                      {
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
@@ -1937,11 +1937,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SUBTRACAO", 3, newNode(valorStr, 0), newNode("-", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1941 "parser.tab.c"
+#line 1941 "analisador_sintatico.tab.c"
     break;
 
   case 67: /* operacao_subtracao: NUMERO SUBTRACAO NUMERO  */
-#line 483 "parser.y"
+#line 483 "analisador_sintatico.y"
                               {
         char valorStr1[16];
         char valorStr2[16];
@@ -1950,22 +1950,22 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_SUBTRACAO", 3, newNode(valorStr1, 0), newNode("-", 0), newNode(valorStr2, 0));
     }
-#line 1954 "parser.tab.c"
+#line 1954 "analisador_sintatico.tab.c"
     break;
 
   case 68: /* operacao_multiplicacao: IDENTIFICADOR MULTIPLICACAO IDENTIFICADOR  */
-#line 494 "parser.y"
+#line 494 "analisador_sintatico.y"
                                               {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
         (yyval.node) = newNode("OPERACAO_MULTIPLICACAO", 3, newNode((yyvsp[-2].strval), 0), newNode("*", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1965 "parser.tab.c"
+#line 1965 "analisador_sintatico.tab.c"
     break;
 
   case 69: /* operacao_multiplicacao: IDENTIFICADOR MULTIPLICACAO NUMERO  */
-#line 500 "parser.y"
+#line 500 "analisador_sintatico.y"
                                          {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
 
@@ -1974,11 +1974,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_MULTIPLICACAO", 3, newNode((yyvsp[-2].strval), 0), newNode("*", 0), newNode(valorStr, 0));
     }
-#line 1978 "parser.tab.c"
+#line 1978 "analisador_sintatico.tab.c"
     break;
 
   case 70: /* operacao_multiplicacao: NUMERO MULTIPLICACAO IDENTIFICADOR  */
-#line 508 "parser.y"
+#line 508 "analisador_sintatico.y"
                                          {
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
@@ -1987,11 +1987,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_MULTIPLICACAO", 3, newNode(valorStr, 0), newNode("*", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 1991 "parser.tab.c"
+#line 1991 "analisador_sintatico.tab.c"
     break;
 
   case 71: /* operacao_multiplicacao: NUMERO MULTIPLICACAO NUMERO  */
-#line 516 "parser.y"
+#line 516 "analisador_sintatico.y"
                                   {
         char valorStr1[16];
         char valorStr2[16];
@@ -2000,22 +2000,22 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_MULTIPLICACAO", 3, newNode(valorStr1, 0), newNode("*", 0), newNode(valorStr2, 0));
     }
-#line 2004 "parser.tab.c"
+#line 2004 "analisador_sintatico.tab.c"
     break;
 
   case 72: /* operacao_divisao: IDENTIFICADOR DIVISAO IDENTIFICADOR  */
-#line 527 "parser.y"
+#line 527 "analisador_sintatico.y"
                                         {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
         (yyval.node) = newNode("OPERACAO_DIVISAO", 3, newNode((yyvsp[-2].strval), 0), newNode("/", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 2015 "parser.tab.c"
+#line 2015 "analisador_sintatico.tab.c"
     break;
 
   case 73: /* operacao_divisao: IDENTIFICADOR DIVISAO NUMERO  */
-#line 533 "parser.y"
+#line 533 "analisador_sintatico.y"
                                    {
         checkVariableType((yyvsp[-2].strval), "INTEIRO");
 
@@ -2024,11 +2024,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_DIVISAO", 3, newNode((yyvsp[-2].strval), 0), newNode("/", 0), newNode(valorStr, 0));
     }
-#line 2028 "parser.tab.c"
+#line 2028 "analisador_sintatico.tab.c"
     break;
 
   case 74: /* operacao_divisao: NUMERO DIVISAO IDENTIFICADOR  */
-#line 541 "parser.y"
+#line 541 "analisador_sintatico.y"
                                    {
         checkVariableType((yyvsp[0].strval), "INTEIRO");
 
@@ -2037,11 +2037,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_DIVISAO", 3, newNode(valorStr, 0), newNode("/", 0), newNode((yyvsp[0].strval), 0));
     }
-#line 2041 "parser.tab.c"
+#line 2041 "analisador_sintatico.tab.c"
     break;
 
   case 75: /* operacao_divisao: NUMERO DIVISAO NUMERO  */
-#line 549 "parser.y"
+#line 549 "analisador_sintatico.y"
                             {
         char valorStr1[16];
         char valorStr2[16];
@@ -2050,11 +2050,11 @@ yyreduce:
 
         (yyval.node) = newNode("OPERACAO_DIVISAO", 3, newNode(valorStr1, 0), newNode("/", 0), newNode(valorStr2, 0));
     }
-#line 2054 "parser.tab.c"
+#line 2054 "analisador_sintatico.tab.c"
     break;
 
 
-#line 2058 "parser.tab.c"
+#line 2058 "analisador_sintatico.tab.c"
 
       default: break;
     }
@@ -2247,7 +2247,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 559 "parser.y"
+#line 559 "analisador_sintatico.y"
 
 void yyerror(const char *s) {
     fprintf(stderr, "Erro sintático na linha %d: %s\n", yylineno - 1, s);

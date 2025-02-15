@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_ANALISADOR_SINTATICO_TAB_H_INCLUDED
+# define YY_YY_ANALISADOR_SINTATICO_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -45,11 +45,11 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 19 "parser.y"
+#line 19 "analisador_sintatico.y"
 
-    #include "node.h"
+    #include "gerador_de_ast.h"
 
-#line 53 "parser.tab.h"
+#line 53 "analisador_sintatico.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -112,13 +112,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "parser.y"
+#line 24 "analisador_sintatico.y"
 
     int intval;     // Para números inteiros
     char *strval;
     Node *node;
 
-#line 122 "parser.tab.h"
+#line 122 "analisador_sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -133,4 +133,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_ANALISADOR_SINTATICO_TAB_H_INCLUDED  */

@@ -7,7 +7,7 @@ Nome: 'ledPin', Tipo: INTEIRO
 Atribuição: ledPin = 2
 [DEBUG] Configurar ledPin como saída reconhecido corretamente!
 Configuração processada.
-[DEBUG] Criando nó CONFIG, bloco=0x563c27a40760
+[DEBUG] Criando nó CONFIG, bloco=0x55859bff4760
 Esperar: 1000 ms
 Esperar: 1000 ms
 Loop principal processado.

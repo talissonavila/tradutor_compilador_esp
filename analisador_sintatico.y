@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "node.h"
-#include "symbol_table.h"
+#include "gerador_de_ast.h"
+#include "tabela_de_simbolos.h"
 
 extern int yylineno;
 extern char linha_atual[];
@@ -17,7 +17,7 @@ Node *syntaxTree = NULL;
 %define parse.trace
 
 %code requires {
-    #include "node.h"
+    #include "gerador_de_ast.h"
 }
 
 // Definição do tipo de valores retornados pelos tokens

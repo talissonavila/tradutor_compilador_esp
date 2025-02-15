@@ -1,5 +1,5 @@
 %{
-#include "parser.tab.h"
+#include "analisador_sintatico.tab.h"
 #include <stdlib.h>
 #include <string.h>
 

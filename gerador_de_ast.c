@@ -1,4 +1,4 @@
-#include "node.h"
+#include "gerador_de_ast.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
