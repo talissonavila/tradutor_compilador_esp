@@ -1,0 +1,10 @@
+var inteiro: ledPin, sensor;
+
+config
+    configurar ledPin como saida;
+fim
+
+repita
+    ajustarPWM ledPin com valor 128;
+    estado = lerDigital sensor;
+fim

@@ -1,0 +1,36 @@
+// Declaração de variáveis
+var inteiro: ledPinVerde;
+var inteiro: ledPinAmarelo;
+var inteiro: ledPinVermelho;
+
+// Configuração inicial
+config
+    // Atribuição dos pinos dos LEDs
+    ledPinVerde = 2;       // LED verde conectado no pino 2
+    ledPinAmarelo = 4;     // LED amarelo conectado no pino 4
+    ledPinVermelho = 5;    // LED vermelho conectado no pino 5
+
+    // Configuração dos pinos como saída
+    configurar ledPinVerde como saida;
+    configurar ledPinAmarelo como saida;
+    configurar ledPinVermelho como saida;
+fim
+
+// Loop principal
+repita
+    // Acende o LED verde e aguarda o tempo configurado
+
+    ligar ledPinVerde;
+    esperar 3000;
+    desligar ledPinVerde;
+
+    // Acende o LED amarelo e aguarda o tempo configurado
+    ligar ledPinAmarelo;
+    esperar 1000;
+    desligar ledPinAmarelo;
+
+    // Acende o LED vermelho e aguarda o tempo configurado
+    ligar ledPinVermelho;
+    esperar 3000;
+    desligar ledPinVermelho;
+fim
