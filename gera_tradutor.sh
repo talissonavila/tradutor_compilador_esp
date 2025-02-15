@@ -7,7 +7,6 @@ sintatical_analyser="analisador_sintatico.y"
 sintatical_filename="analisador_sintatico"
 three_filename="gerador_de_ast"
 symbol_table_filename="tabela_de_simbolos"
-#symbol_table_filename="symbol_table"
 
 # Comando para gerar o tradutor com gcc
 generate_translater="gcc -I. $sintatical_filename.tab.c $lexical_filename $three_filename.c $symbol_table_filename.c -o tradutor -lfl -g"
