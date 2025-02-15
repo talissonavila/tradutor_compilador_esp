@@ -1,0 +1,112 @@
+[DEBUG] Variável 'ledPinVerde' do tipo 'INTEIRO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'ledPinVerde', Tipo: INTEIRO
+----------------------------
+[DEBUG] Variável 'ledPinAmarelo' do tipo 'INTEIRO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'ledPinAmarelo', Tipo: INTEIRO
+Nome: 'ledPinVerde', Tipo: INTEIRO
+----------------------------
+[DEBUG] Variável 'ledPinVermelho' do tipo 'INTEIRO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'ledPinVermelho', Tipo: INTEIRO
+Nome: 'ledPinAmarelo', Tipo: INTEIRO
+Nome: 'ledPinVerde', Tipo: INTEIRO
+----------------------------
+Atribuição: ledPinVerde = 2
+Atribuição: ledPinAmarelo = 4
+Atribuição: ledPinVermelho = 5
+[DEBUG] Configurar ledPinVerde como saída reconhecido corretamente!
+[DEBUG] Configurar ledPinAmarelo como saída reconhecido corretamente!
+[DEBUG] Configurar ledPinVermelho como saída reconhecido corretamente!
+Configuração processada.
+[DEBUG] Criando nó CONFIG, bloco=0x561246b9bbe0
+Esperar: 3000 ms
+Esperar: 1000 ms
+Esperar: 3000 ms
+Loop principal processado.
+[DEBUG] Criando nó para LOOP PRINCIPAL
+Programa reconhecido com sucesso!
+[DEBUG] Árvore sintática gerada, iniciando impressão...
+└── PROGRAMA
+    └── DECLARACOES
+        └── DECLARACAO
+            └── INTEIRO
+            └── LISTA_IDENTIFICADORES
+                └── IDENTIFICADOR
+                    └── ledPinVerde
+        └── DECLARACAO
+            └── INTEIRO
+            └── LISTA_IDENTIFICADORES
+                └── IDENTIFICADOR
+                    └── ledPinAmarelo
+        └── DECLARACAO
+            └── INTEIRO
+            └── LISTA_IDENTIFICADORES
+                └── IDENTIFICADOR
+                    └── ledPinVermelho
+    └── CONFIG
+        └── BLOCO
+            └── ATRIBUICAO
+                └── ledPinVerde
+                └── NUMERO
+                    └── 2
+            └── ATRIBUICAO
+                └── ledPinAmarelo
+                └── NUMERO
+                    └── 4
+            └── ATRIBUICAO
+                └── ledPinVermelho
+                └── NUMERO
+                    └── 5
+            └── CONFIGURAR_IO
+                └── ledPinVerde
+                └── SAIDA
+            └── CONFIGURAR_IO
+                └── ledPinAmarelo
+                └── SAIDA
+            └── CONFIGURAR_IO
+                └── ledPinVermelho
+                └── SAIDA
+        └── FIM
+    └── BLOCO_VAZIO
+    └── REPITA
+        └── BLOCO
+            └── LIGAR
+                └── ledPinVerde
+            └── ESPERAR
+                └── 3000
+            └── DESLIGAR
+                └── ledPinVerde
+            └── LIGAR
+                └── ledPinAmarelo
+            └── ESPERAR
+                └── 1000
+            └── DESLIGAR
+                └── ledPinAmarelo
+            └── LIGAR
+                └── ledPinVermelho
+            └── ESPERAR
+                └── 3000
+            └── DESLIGAR
+                └── ledPinVermelho
+        └── FIM
+    └── BLOCO_VAZIO
+    └── FIM_VAZIO
+[DEBUG] Gerando código C++...
+[DEBUG] Entrou no token PROGRAMA
+[DEBUG] Entrou no token DECLARACOES
+[DEBUG] Entrou no token DECLARACAO
+[DEBUG] Declarando variável: int ledPinVerde;
+[DEBUG] Entrou no token DECLARACAO
+[DEBUG] Declarando variável: int ledPinAmarelo;
+[DEBUG] Entrou no token DECLARACAO
+[DEBUG] Declarando variável: int ledPinVermelho;
+[DEBUG] Entrou no token CONFIG
+[SUCESSO] Código C++ gerado em 'codigo_esp32.cpp'.

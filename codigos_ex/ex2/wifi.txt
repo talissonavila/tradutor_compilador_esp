@@ -1,0 +1,130 @@
+[DEBUG] Variável 'ledPin' do tipo 'INTEIRO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'ledPin', Tipo: INTEIRO
+----------------------------
+[DEBUG] Variável 'brilho' do tipo 'INTEIRO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'brilho', Tipo: INTEIRO
+Nome: 'ledPin', Tipo: INTEIRO
+----------------------------
+[DEBUG] Variável 'ssid' do tipo 'TEXTO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'ssid', Tipo: TEXTO
+Nome: 'brilho', Tipo: INTEIRO
+Nome: 'ledPin', Tipo: INTEIRO
+----------------------------
+[DEBUG] Variável 'senha' do tipo 'TEXTO' adicionada à tabela de símbolos.
+
+[DEBUG] Tabela de Símbolos:
+----------------------------
+Nome: 'senha', Tipo: TEXTO
+Nome: 'ssid', Tipo: TEXTO
+Nome: 'brilho', Tipo: INTEIRO
+Nome: 'ledPin', Tipo: INTEIRO
+----------------------------
+Atribuição: ledPin = 2
+Atribuição: ssid = "MinhaRedeWiFi"
+Atribuição: senha = "MinhaSenhaWiFi"
+[DEBUG] Configurar ledPin como saída reconhecido corretamente!
+Conectar WiFi com SSID ssid e Senha senha
+[DEBUG] Criando nó para operação WiFi
+Configuração processada.
+[DEBUG] Criando nó CONFIG, bloco=0x55dd75303be0
+Atribuição: brilho = 128
+Esperar: 1000 ms
+Atribuição: brilho = 0
+Esperar: 1000 ms
+Loop principal processado.
+[DEBUG] Criando nó para LOOP PRINCIPAL
+Programa reconhecido com sucesso!
+[DEBUG] Árvore sintática gerada, iniciando impressão...
+└── PROGRAMA
+    └── DECLARACOES
+        └── DECLARACAO
+            └── INTEIRO
+            └── LISTA_IDENTIFICADORES
+                └── IDENTIFICADOR
+                    └── ledPin
+                └── IDENTIFICADOR
+                    └── brilho
+        └── DECLARACAO
+            └── TEXTO
+            └── LISTA_IDENTIFICADORES
+                └── IDENTIFICADOR
+                    └── ssid
+                └── IDENTIFICADOR
+                    └── senha
+    └── CONFIG
+        └── BLOCO
+            └── ATRIBUICAO
+                └── ledPin
+                └── NUMERO
+                    └── 2
+            └── ATRIBUICAO
+                └── ssid
+                └── STRING
+                    └── "MinhaRedeWiFi"
+            └── ATRIBUICAO
+                └── senha
+                └── STRING
+                    └── "MinhaSenhaWiFi"
+            └── CONFIGURAR_IO
+                └── ledPin
+                └── SAIDA
+            └── CONFIGURAR_PWM
+                └── ledPin
+                └── FREQUENCIA
+                    └── 5000
+                └── RESOLUCAO
+                    └── 8
+            └── CONECTAR_WIFI
+                └── ssid
+                └── senha
+        └── FIM
+    └── BLOCO_VAZIO
+    └── REPITA
+        └── BLOCO
+            └── ATRIBUICAO
+                └── brilho
+                └── NUMERO
+                    └── 128
+            └── AJUSTAR_PWM
+                └── ledPin
+                └── VALOR
+                    └── brilho
+                └── 
+[ERRO] O nó  tem 314932000 filhos, mas (nil) é NULL!
+            └── ESPERAR
+                └── 1000
+            └── ATRIBUICAO
+                └── brilho
+                └── NUMERO
+                    └── 0
+            └── AJUSTAR_PWM
+                └── ledPin
+                └── VALOR
+                    └── brilho
+                └── 
+[ERRO] O nó  tem 314932000 filhos, mas (nil) é NULL!
+            └── ESPERAR
+                └── 1000
+        └── FIM
+    └── BLOCO_VAZIO
+    └── FIM_VAZIO
+[DEBUG] Gerando código C++...
+[DEBUG] Entrou no token PROGRAMA
+[DEBUG] Entrou no token DECLARACOES
+[DEBUG] Entrou no token DECLARACAO
+[DEBUG] Declarando variável: int ledPin;
+[DEBUG] Declarando variável: int brilho;
+[DEBUG] Entrou no token DECLARACAO
+[DEBUG] Declarando variável: String ssid;
+[DEBUG] Declarando variável: String senha;
+[DEBUG] Entrou no token CONFIG
+[SUCESSO] Código C++ gerado em 'codigo_esp32.cpp'.
