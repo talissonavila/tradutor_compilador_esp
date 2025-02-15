@@ -1,5 +1,5 @@
-#ifndef SYMBOL_TABLE_H
-#define SYMBOL_TABLE_H
+#ifndef TABELA_DE_SIMBOLOS_H
+#define TABELA_DE_SIMBOLOS_H
 
 #include <stdio.h>
 #include <stdlib.h>
