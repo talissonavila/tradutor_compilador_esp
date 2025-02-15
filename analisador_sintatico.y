@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "node.h"
-#include "symbol_table.h"
+#include "gerador_de_ast.h"
+#include "tabela_de_simbolos.h"
 
 extern int yylineno;
 extern char linha_atual[];
@@ -17,17 +17,15 @@ Node *syntaxTree = NULL;
 %define parse.trace
 
 %code requires {
-    #include "node.h"
+    #include "gerador_de_ast.h"
 }
 
-// Definição do tipo de valores retornados pelos tokens
 %union {
-    int intval;     // Para números inteiros
+    int intval;
     char *strval;
     Node *node;
 }
 
-// Definição dos tokens e seus tipos
 %token <strval> INTEIRO TEXTO IDENTIFICADOR STRING SAIDA ENTRADA
 %token <intval> NUMERO FREQUENCIA RESOLUCAO COM
 %token VAR BOOLEANO CONFIG REPITA FIM LIGAR DESLIGAR
@@ -48,7 +46,7 @@ Node *syntaxTree = NULL;
 %type <node> operacoes_aritmeticas operacao_soma operacao_subtracao operacao_multiplicacao operacao_divisao
 
 %%
-// Estrutura do programa
+
 programa:
     declaracoes config bloco_opt repita bloco_opt fim_opt { 
         printf("Programa reconhecido com sucesso!\n"); 
@@ -58,7 +56,7 @@ programa:
             exit(EXIT_FAILURE);
         }
         printf("[DEBUG] Árvore sintática gerada, iniciando impressão...\n");
-        printTree(syntaxTree, 0); // Para exibir a árvore sintática
+        printTree(syntaxTree, 0);
     }
     ;
 
@@ -67,7 +65,6 @@ bloco_opt:
     | bloco { $$ = $1; }
     ;
 
-// Declaração de variáveis
 declaracoes:
     { $$ = newNode("DECLARACOES", 0); }
     | declaracoes declaracao { addChild($1, $2); $$ = $1; }
@@ -164,7 +161,6 @@ lista_identificadores:
       $$ = $1;}
     ;
 
-// Bloco de configuração
 config:
     CONFIG bloco FIM { 
         printf("Configuração processada.\n");
@@ -173,7 +169,6 @@ config:
     }
     ;
 
-// Bloco repetitivo (loop principal)
 repita:
     REPITA bloco FIM { 
         printf("Loop principal processado.\n");
@@ -182,7 +177,6 @@ repita:
     }
     ;
 
-// Bloco com múltiplos comandos
 bloco:
     comando { $$ = newNode("BLOCO", 1, $1); }
     | bloco comando { 
@@ -191,7 +185,6 @@ bloco:
     }
     ;
 
-// Comandos suportados
 comando:
     atribuicao { $$ = $1; }
     | operacao_pwm { $$ = $1; }
@@ -203,13 +196,12 @@ comando:
     | operacoes_aritmeticas { $$ = $1; }
     ;
 
-// Atribuição de valores
 atribuicao:
     IDENTIFICADOR '=' NUMERO ';' { 
         checkVariableType($1, "INTEIRO");
         printf("Atribuição: %s = %d\n", $1, $3);
         char buffer[20];
-        sprintf(buffer, "%d", $3); // Converte inteiro para string
+        sprintf(buffer, "%d", $3);
         $$ = newNode("ATRIBUICAO", 2, newNode($1, 0), newNode("NUMERO", 1, newNode(strdup(buffer), 0))); 
     }
     | IDENTIFICADOR '=' STRING ';' { 
@@ -233,12 +225,11 @@ atribuicao:
     }
     ;
 
-// Configuração de PWM e IO
 operacao_pwm:
     AJUSTARPWM IDENTIFICADOR COM VALOR NUMERO ';' {
         checkVariableType($2, "INTEIRO");
         char valorStr[16];
-        sprintf(valorStr, "%d", $5);  // Converte o número para string
+        sprintf(valorStr, "%d", $5);
 
         $$ = newNode("AJUSTAR_PWM", 3,  
             newNode($2, 0), 
@@ -253,8 +244,8 @@ operacao_pwm:
     | CONFIGURARPWM IDENTIFICADOR COM FREQUENCIA NUMERO RESOLUCAO NUMERO ';' {
         checkVariableType($2, "INTEIRO");
         char freqStr[16], resStr[16];
-        sprintf(freqStr, "%d", $5);  // Converte o número para string
-        sprintf(resStr, "%d", $7);   // Converte o número para string
+        sprintf(freqStr, "%d", $5);
+        sprintf(resStr, "%d", $7);
     
         $$ = newNode("CONFIGURAR_PWM", 3,  
             newNode($2, 0), 
@@ -263,7 +254,6 @@ operacao_pwm:
         );
     }
 
-// Operação de entrada e saída
 operacao_io:
     CONFIGURAR IDENTIFICADOR COMO SAIDA ';' { 
         checkVariableType($2, "INTEIRO");
@@ -285,7 +275,6 @@ operacao_io:
     }
     ;
 
-// Conexão WiFi
 operacao_wifi:
     CONECTARWIFI IDENTIFICADOR IDENTIFICADOR ';' { 
         checkVariableType($2, "TEXTO");
@@ -318,7 +307,6 @@ operacao_serial:
     }
     ;
 
-// Operações de controle
 operacao_controle:
     ESPERAR NUMERO ';' { 
         printf("Esperar: %d ms\n", $2);
@@ -593,7 +581,7 @@ int main() {
 
     printf("[DEBUG] Gerando código C++...\n");
 
-    FILE *cppFile = fopen("output/saida.cpp", "w");
+    FILE *cppFile = fopen("output/codigo_esp32.cpp", "w");
     if (!cppFile) {
         perror("[ERRO] Não foi possível criar o arquivo de saída");
         return EXIT_FAILURE;
@@ -602,7 +590,7 @@ int main() {
     generateFinalCppCode(syntaxTree, cppFile);
     fclose(cppFile);
 
-    printf("[SUCESSO] Código C++ gerado em 'saida.cpp'.\n");
+    printf("[SUCESSO] Código C++ gerado em 'codigo_esp32.cpp'.\n");
 
     return 0;
 }

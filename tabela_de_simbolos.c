@@ -1,4 +1,4 @@
-#include "symbol_table.h"
+#include "tabela_de_simbolos.h"
 
 Symbol *symbolTable = NULL;
 

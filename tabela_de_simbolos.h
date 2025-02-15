@@ -1,5 +1,5 @@
-#ifndef SYMBOL_TABLE_H
-#define SYMBOL_TABLE_H
+#ifndef TABELA_DE_SIMBOLOS_H
+#define TABELA_DE_SIMBOLOS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,6 @@ typedef struct Symbol {
     struct Symbol *next;
 } Symbol;
 
-// Cabeçalho das funções
 void insertSymbol(char *name, char *type);
 Symbol *lookupSymbol(char *name);
 void checkVariablesDeclared(int count, ...);
