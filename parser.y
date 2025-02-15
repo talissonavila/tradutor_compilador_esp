@@ -593,7 +593,7 @@ int main() {
 
     printf("[DEBUG] Gerando código C++...\n");
 
-    FILE *cppFile = fopen("output/saida.cpp", "w");
+    FILE *cppFile = fopen("output/codigo_esp32.cpp", "w");
     if (!cppFile) {
         perror("[ERRO] Não foi possível criar o arquivo de saída");
         return EXIT_FAILURE;
@@ -602,7 +602,7 @@ int main() {
     generateFinalCppCode(syntaxTree, cppFile);
     fclose(cppFile);
 
-    printf("[SUCESSO] Código C++ gerado em 'saida.cpp'.\n");
+    printf("[SUCESSO] Código C++ gerado em 'codigo_esp32.cpp'.\n");
 
     return 0;
 }

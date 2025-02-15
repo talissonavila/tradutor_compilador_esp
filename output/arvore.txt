@@ -7,7 +7,7 @@ Nome: 'ledPin', Tipo: INTEIRO
 Atribuição: ledPin = 2
 [DEBUG] Configurar ledPin como saída reconhecido corretamente!
 Configuração processada.
-[DEBUG] Criando nó CONFIG, bloco=0x555f80dd8760
+[DEBUG] Criando nó CONFIG, bloco=0x563c27a40760
 Esperar: 1000 ms
 Esperar: 1000 ms
 Loop principal processado.
@@ -51,4 +51,4 @@ Programa reconhecido com sucesso!
 [DEBUG] Entrou no token DECLARACAO
 [DEBUG] Declarando variável: int ledPin;
 [DEBUG] Entrou no token CONFIG
-[SUCESSO] Código C++ gerado em 'saida.cpp'.
+[SUCESSO] Código C++ gerado em 'codigo_esp32.cpp'.
