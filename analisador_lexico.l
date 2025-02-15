@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINHA 1024
-char linha_atual[MAX_LINHA]; // Armazena a linha atual para exibir no erro
-int posicao_linha = 0;  // Índice para armazenar caracteres
+#define MAX_CHAR_POR_LINHA 2048
+char linha_atual[MAX_CHAR_POR_LINHA];
+int posicao_linha = 0;
 %}
 
 VAR              var
@@ -106,11 +106,11 @@ COMENTARIO    "//".*
 
 . {
     if (yytext[0] == '\n') {
-        linha_atual[posicao_linha] = '\0';  // Finaliza a string antes de mudar de linha
-        posicao_linha = 0;  // Reseta para a próxima linha
+        linha_atual[posicao_linha] = '\0';
+        posicao_linha = 0;
     } else {
-        if (posicao_linha < MAX_LINHA - 1) {
-            linha_atual[posicao_linha++] = yytext[0];  // Adiciona caractere ao buffer
+        if (posicao_linha < MAX_CHAR_POR_LINHA - 1) {
+            linha_atual[posicao_linha++] = yytext[0];
         }
     }
 }

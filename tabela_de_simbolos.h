@@ -11,7 +11,6 @@ typedef struct Symbol {
     struct Symbol *next;
 } Symbol;
 
-// Cabeçalho das funções
 void insertSymbol(char *name, char *type);
 Symbol *lookupSymbol(char *name);
 void checkVariablesDeclared(int count, ...);

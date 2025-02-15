@@ -7,7 +7,6 @@ static int insideSetup = 0;
 static int insideLoop = 0;
 static int configProcessed = 0;
 
-// Cria um novo nó da árvore sintática
 Node *newNode(char *label, int numChildren, ...) {
     Node *node = malloc(sizeof(Node));
     if (!node) {
@@ -15,7 +14,7 @@ Node *newNode(char *label, int numChildren, ...) {
         return NULL;
     }
 
-    node->label = strdup(label);  // Duplica a string para evitar problemas de ponteiro
+    node->label = strdup(label);
 
     node->numChildren = numChildren;
     node->children = (numChildren > 0) ? calloc(numChildren, sizeof(Node *)) : NULL;
@@ -33,29 +32,22 @@ Node *newNode(char *label, int numChildren, ...) {
     return node;
 }
 
-// Função para imprimir a árvore sintática recursivamente
 void printTree(Node *node, int depth) {
     if (node == NULL) {
         printf("[ERRO] Tentativa de imprimir um nó NULL!\n");
         return;
     }
-    if (node->label == NULL || strcmp(node->label, "") == 0) {
-        //printf("[ERRO] Nó em addr: %p tem label NULL ou vazio!\n", (void *)node);
-        return;
-    }
     printf("%*s└── %s\n", depth * 4, "", node->label);
-    //printf("%*s%s (addr: %p)\n", depth * 2, "", node->label, (void *)node);
 
     if (node->numChildren > 0 && node->children == NULL) {
-        printf("[ERRO] Nó %s tem %d filhos, mas `children` é NULL!\n", node->label, node->numChildren);
+        printf("[ERRO] O nó %s tem %d filhos, mas %p é NULL!\n", node->label, node->numChildren, node->children);
         return;
     }
 
     for (int i = 0; i < node->numChildren; i++) {
         if (node->children[i] == NULL) {
-            printf("[ERRO] Filho %d de %s é NULL! (pai addr: %p)\n", i, node->label, (void *)node);
+            printf("[ERRO] Filho %d de %s é NULL! (pai addr: %p)\n", i+1, node->label, (void *)node);
         } else {
-            //printf("[DEBUG] Chamando printTree para filho %d de %s (addr: %p)\n", i, node->label, (void *)node->children[i]);
             printTree(node->children[i], depth + 1);
         }
     }
@@ -69,7 +61,6 @@ void addChild(Node *parent, Node *child) {
     parent->children[parent->numChildren - 1] = child;
 }
 
-// Libera a memória da árvore sintática
 void freeTree(Node *node) {
     if (node == NULL) return;
 
@@ -88,7 +79,7 @@ void generateFinalCppCode(Node *node, FILE *file) {
 
 void printIndent(FILE *file, int indentLevel) {
     for (int i = 0; i < indentLevel; i++) {
-        fprintf(file, "    "); // 4 espaços por nível de indentação
+        fprintf(file, "    ");
     }
 }
 
@@ -98,23 +89,19 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
     static int configProcessed = 0;
     static int declarationsProcessed = 0;
 
-    // PROGRAMA (Estrutura Principal)
     if (strcmp(node->label, "PROGRAMA") == 0) {
         printf("[DEBUG] Entrou no token PROGRAMA\n");
 
         fprintf(file, "#include <Arduino.h>\n");
         fprintf(file, "#include <WiFi.h>\n\n");
 
-        // Declarações globais antes do setup
         generateCppCode(node->children[0], file, 0);
         fprintf(file, "\n");
 
-        // Setup (Configurações)
         fprintf(file, "void setup() {\n");
         generateCppCode(node->children[1], file, 1);
         fprintf(file, "}\n\n");
 
-        // Loop principal
         fprintf(file, "void loop() {\n");
         generateCppCode(node->children[3], file, 1);
         fprintf(file, "}\n");
@@ -122,7 +109,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // DECLARAÇÕES DE VARIÁVEIS
     else if (strcmp(node->label, "DECLARACOES") == 0) {
         if (declarationsProcessed) return;
         declarationsProcessed = 1;
@@ -135,7 +121,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // INDIVIDUALMENTE DECLARAÇÃO
     else if (strcmp(node->label, "DECLARACAO") == 0) {
         printf("[DEBUG] Entrou no token DECLARACAO\n");
 
@@ -160,7 +145,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         }
     }
 
-    // CONFIGURAÇÕES (Dentro do setup)
     else if (strcmp(node->label, "CONFIG") == 0) {
         if (configProcessed) return;
         configProcessed = 1;
@@ -170,14 +154,12 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // ATRIBUIÇÕES (Dentro do setup ou loop)
     else if (strcmp(node->label, "ATRIBUICAO") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "%s = %s;\n", node->children[0]->label, node->children[1]->children[0]->label);
         return;
     }
 
-    // CONFIGURAÇÃO DE PINOS
     else if (strcmp(node->label, "CONFIGURAR_IO") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "pinMode(%s, %s);\n", node->children[0]->label,
@@ -185,7 +167,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // PWM
     else if (strcmp(node->label, "CONFIGURAR_PWM") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "ledcSetup(0, %s, %s);\n",
@@ -195,21 +176,18 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // AJUSTE PWM
     else if (strcmp(node->label, "AJUSTAR_PWM") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "analogWrite(%s, %s);\n", node->children[0]->label, node->children[1]->children[0]->label);
         return;
     }
 
-    // CONECTAR WIFI
     else if (strcmp(node->label, "CONECTAR_WIFI") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "WiFi.begin(%s, %s);\n", node->children[0]->label, node->children[1]->label);
         return;
     }
 
-    // LIGAR/DESLIGAR PINOS
     else if (strcmp(node->label, "LIGAR") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "digitalWrite(%s, HIGH);\n", node->children[0]->label);
@@ -221,14 +199,12 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // ATRASO (DELAY)
     else if (strcmp(node->label, "ESPERAR") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "delay(%s);\n", node->children[0]->label);
         return;
     }
 
-    // ESTRUTURA CONDICIONAL
     else if (strcmp(node->label, "CONDICIONAL") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "if (%s) {\n", node->children[0]->children[0]->label);
@@ -246,7 +222,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // LOOP ENQUANTO
     else if (strcmp(node->label, "ENQUANTO") == 0) {
         printIndent(file, indentLevel);
         fprintf(file, "while (true) {\n");
@@ -256,7 +231,6 @@ void generateCppCode(Node *node, FILE *file, int indentLevel) {
         return;
     }
 
-    // Percorre os filhos restantes
     for (int i = 0; i < node->numChildren; i++) {
         generateCppCode(node->children[i], file, indentLevel);
     }

@@ -4,16 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>  // Para lidar com argumentos variáveis
+#include <stdarg.h>
 
-// Estrutura do nó da árvore sintática
 typedef struct Node {
-    char *label;            // Nome do nó (ex: "ATRIBUICAO")
-    struct Node **children; // Ponteiro para filhos
-    int numChildren;        // Número de filhos
+    char *label;
+    struct Node **children;
+    int numChildren;
 } Node;
 
-// Funções para manipular a árvore sintática
 Node *newNode(char *label, int numChildren, ...);
 void printTree(Node *node, int depth);
 void freeTree(Node *node);
